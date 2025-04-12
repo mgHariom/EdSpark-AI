@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
@@ -8,19 +8,26 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Set generating state to true before fetch
     setIsGenerating(true);
-    
+
+    console.log(concept);
+
     try {
-      const res = await fetch("http://localhost:8000/generate", {
+      const res = await fetch("http://localhost:8000/flashcards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ concept }),
+        body: JSON.stringify({ question: concept }),
       });
-      
+
       const data = await res.json();
-      setFlashcards(data.flashcards);
+      console.log(data);
+      if (Array.isArray(data.flashcards)) {
+        setFlashcards(data.flashcards);
+      } else {
+        console.error("Invalid flashcards data:", data);
+      }
     } catch (error) {
       console.error("Error generating flashcards:", error);
       // Optionally handle error state here
@@ -30,12 +37,16 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    console.log("Updated flashcards:", flashcards);
+  }, [flashcards]);
+
   return (
     <div className="container">
       <div className="header">
         <h1 className="title">Ask a Concept</h1>
       </div>
-      
+
       <div className="content-area">
         <div className="cards-column">
           {isGenerating ? (
@@ -51,11 +62,13 @@ function App() {
                 <div className="loading-animation"></div>
               </div>
             </>
-          ) : flashcards.length > 0 ? (
+          ) : flashcards && flashcards.length > 0 ? (
             // Show actual flashcards when we have results
+            Array.isArray(flashcards) &&
             flashcards.map((card, index) => (
               <div key={index} className="flashcard">
-                <p className="flashcard-content">{card.text}</p>
+                  <p className="flashcard-content"> {card.front}</p>
+                  <p className="flashcard-content"> {card.back}</p>
               </div>
             ))
           ) : (
@@ -67,9 +80,8 @@ function App() {
             </>
           )}
         </div>
-        
       </div>
-      
+
       <form onSubmit={handleSubmit} className="input-form">
         <input
           type="text"
@@ -80,10 +92,7 @@ function App() {
           required
           disabled={isGenerating}
         />
-        <button 
-          className="generate-button"
-          disabled={isGenerating}
-        >
+        <button className="generate-button" disabled={isGenerating}>
           {isGenerating ? "Generating..." : "Generate"}
         </button>
       </form>

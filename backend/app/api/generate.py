@@ -1,22 +1,16 @@
-from fastapi import APIRouter, Request
+# backend/app/api/generate.py
+
+from fastapi import APIRouter
 from pydantic import BaseModel
+from core.llm import generate_flashcards
 
 router = APIRouter()
 
-class ConceptRequest(BaseModel):
-    concept: str
+class QueryRequest(BaseModel):
+    question: str
 
-@router.post("/generate")
-def generate_flashcard(req: ConceptRequest):
-    
-    concept = req.concept
-    return {
-        "flashcards": [
-            {"text": f"{concept} is the study of motion."},
-            {"text": f"{concept} is the study of forces."},
-            {"text": f"{concept} is the study of energy."},
-            {"text": f"{concept} is the study of matter."},
-            {"text": f"{concept} is the study of waves."},
-            {"text": f"{concept} is the study of electricity."},
-        ]
-    }
+@router.post("/flashcards")
+async def generate_flashcards_endpoint(request: QueryRequest):
+    flashcards = generate_flashcards(request.question)
+    return {"flashcards": flashcards}
+
