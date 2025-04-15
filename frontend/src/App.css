@@ -12,77 +12,133 @@ body {
   color: #e0e0e0;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Prevent body scrolling */
-  height: 100vh;
+  overflow: auto; /* Prevent body scrolling */
+  min-height: 100vh;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: auto; /* Changed from 100vh to auto */
   max-width: 900px;
   margin: 0 auto;
   position: relative;
+  padding-bottom: 6rem; /* Space for form */
+  overflow: auto;
 }
 
-.header {
-  text-align: center;
-  padding: 1.5rem 1rem 1rem;
-  background-color: #2a2a2a;
+/* Updated content area to wrap content neatly */
+.content-area {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0 1rem;
+  max-width: 100%;
+  /* overflow-y: auto; */
 }
 
 .title {
   font-size: 2.5rem;
   font-weight: 700;
+  margin: 1rem 0;
   color: #ffc107; /* Golden yellow color */
+  text-align: center;
 }
 
-.content-area {
-  display: flex;
-  gap: 1rem;
-  flex-grow: 1;
-  padding: 0 1rem;
-  overflow-y: auto; /* This makes only the content area scrollable */
-  padding-bottom: 5rem; /* Add padding to ensure content doesn't hide behind the input form */
-}
-
-.cards-column {
-  flex: 3;
+/* Flashcards grid container */
+.flashcards-container {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-bottom: 1rem;
 }
 
-.right-column {
-  flex: 1;
-  padding-bottom: 1rem;
+.flashcard-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ffc107;
 }
 
+/* Wrap flashcards neatly */
+.cards-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Individual flashcard */
 .flashcard {
   background-color: #e0e0e0;
-  padding: 1.5rem;
+  padding: 1.25rem;
   border-radius: 0.75rem;
   min-height: 80px;
+  flex: 1 1 250px;
+  max-width: 100%;
 }
 
-.sidebar-card {
-  background-color: #e0e0e0;
-  border-radius: 0.75rem;
-  height: 100%;
-  min-height: 270px;
-  position: sticky;
-  top: 0;
-}
-
-.empty {
-  background-color: #e0e0e0;
-}
-
+/* Flashcard text */
 .flashcard-content {
   color: #333;
   font-size: 1rem;
 }
+
+/* Links section */
+.links-container {
+  background-color: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+}
+
+.links-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link-card {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.link-card:hover {
+  background-color: #f0f8ff;
+}
+
+.link-item{
+  text-decoration: none;
+}
+
+.link-title {
+  font-weight: 600;
+  color: #007acc;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  text-decoration: none;
+}
+
+.link-snippet {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+ /* input field styling */
 
 .input-form {
   display: flex;

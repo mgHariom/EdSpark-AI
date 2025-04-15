@@ -5,6 +5,7 @@ import ast
 from core.planner import generate_search_prompts
 from core.llm import call_llm  
 from core.search import search_web
+from core.flashcards import generate_flashcards_from_explanation
 
 router = APIRouter()
 
@@ -42,10 +43,14 @@ async def process_query(request: QueryRequest):
 
         simplified_explanation = call_llm(system_prompt, user_prompt)
 
+        # Step 5: Generate flashcards from the explanation
+        flashcards = generate_flashcards_from_explanation(simplified_explanation)
+
         return {
             "search_prompt": first_prompt,
             "results": results,
-            "explanation": simplified_explanation
+            "explanation": simplified_explanation,
+            "flashcards": flashcards
         }
     except Exception as e:
         return {"error": str(e)}
