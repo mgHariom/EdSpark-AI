@@ -183,6 +183,34 @@ body {
   }
 }
 
+/* ExplanationBox.css */
+.explanation-container {
+  margin-top: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  display: inline-block; /* Ensures it wraps content */
+  max-width: fit-content;        /* Avoids overflow */
+}
+
+.explanation-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #1f2937;
+}
+
+.explanation-text {
+  font-size: 1rem;
+  color: #374151;
+  line-height: 1.6;
+  white-space: pre-line; /* Preserves line breaks */
+}
+
+
+
 /* Responsive styles */
 @media (max-width: 768px) {
   .content-area {

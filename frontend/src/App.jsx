@@ -5,37 +5,37 @@ function App() {
   const [concept, setConcept] = useState("");
   const [flashcards, setFlashcards] = useState([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [explanation, setExplanation] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Set generating state to true before fetch
+  
     setIsGenerating(true);
-
     console.log(concept);
-
+  
     try {
-      const res = await fetch("http://localhost:8000/flashcards", {
+      const res = await fetch("http://localhost:8000/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: concept }),
       });
-
+  
       const data = await res.json();
       console.log(data);
-      if (Array.isArray(data.flashcards)) {
-        setFlashcards(data.flashcards);
+  
+      // Extract only the explanation
+      if (data.explanation) {
+        setExplanation(data.explanation);
       } else {
-        console.error("Invalid flashcards data:", data);
+        console.error("No explanation found in response:", data);
       }
     } catch (error) {
-      console.error("Error generating flashcards:", error);
-      // Optionally handle error state here
+      console.error("Error generating explanation:", error);
     } finally {
-      // Set generating state to false after fetch completes (success or error)
       setIsGenerating(false);
     }
   };
+  
 
   useEffect(() => {
     console.log("Updated flashcards:", flashcards);
@@ -48,6 +48,14 @@ function App() {
       </div>
 
       <div className="content-area">
+      {explanation && (
+        <div className="explanation-container">
+          <h2 className="explanation-title">Simplified Explanation</h2>
+          <p className="explanation-text">{explanation}</p>
+        </div>
+      )}
+
+
         <div className="cards-column">
           {isGenerating ? (
             // Show loading indicators when generating
