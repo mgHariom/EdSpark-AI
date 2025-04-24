@@ -14,14 +14,6 @@ app.add_middleware(
 
 app.include_router(generate.router)
 
-# class Query(BaseModel):
-#     question: str
-
-# @app.post("/flashcards")
-# def get_flashcards(query: Query):
-#     result = generate(query.question)
-#     return {"flashcards": result}
-
 @app.get("/")
 def read_root():
     return {"message": "hello React... I am your support buddy"}
