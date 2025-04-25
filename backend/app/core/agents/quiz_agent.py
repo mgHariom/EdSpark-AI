@@ -11,18 +11,16 @@ def get_quiz_agent() -> Dict[str, Callable]:
                 Explanation:
                 {summary}
 
-                Return ONLY JSON in this format:
-                {{
-                  "topic": "The topic of the explanation",
-                  "quiz": [
+                Return ONLY ARRAY in this format:
+                   [
                     {{
                       "question": "Your question here?",
                       "options": ["Option A", "Option B", "Option C", "Option D"],
-                      "answer": "Correct option"
+                      "answer": "Correct option (return the actual option, not the letter)"
                     }},
                     ...
                   ]
-                }}
+                
                 """
 
         response = call_llm("You're a quiz master AI.", prompt)

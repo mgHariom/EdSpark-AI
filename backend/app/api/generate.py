@@ -98,10 +98,3 @@ def evaluate_route(data: dict):
     return {"evaluation": evaluation, "feedback": feedback}
 
 
-@router.post("/feedback")
-def feedback_route(data: dict):
-    evaluation = data[evaluation]
-    feedback = quiz_agent["generate_feedback"](evaluation)
-    return {"feedback": feedback}
-
-
