@@ -5,7 +5,8 @@ from core.planner import generate_search_prompts
 from core.llm import call_llm
 from core.search import search_web  # Brave API-based search
 from core.flashcards import generate_flashcards_from_explanation
-from core.agents.quiz_agent import generate_quiz_direct
+# from core.agents.quiz_agent import generate_quiz_direct
+from core.agents.quiz_agent import get_quiz_agent
 
 router = APIRouter()
 
@@ -78,25 +79,29 @@ class QuizRequest(BaseModel):
 #         "quiz": quiz
 #     }
 
-@router.post("/quiz")
-async def generate_quiz(req: QuizRequest):
-    quiz = generate_quiz_direct(req.explanation)
-    return {"topic": req.topic, "quiz": quiz}
+quiz_agent = get_quiz_agent()
 
-class EvaluateRequest(BaseModel):
-    topic: str
-    questions: list[dict]   # what you sent
-    answers: dict           # {index: "chosen option"}
+@router.post("/quiz")
+def quiz_route(data: dict):
+    explanation = data["explanation"]
+    quiz = quiz_agent["generate_quiz"](explanation)
+    return {"quiz": quiz}
 
 @router.post("/evaluate")
-async def evaluate_quiz(req: EvaluateRequest):
-    agent = get_quiz_agent()
-    formatted = "\n".join(
-        f"Q{idx+1}. {q['question']}\nUser: {req.answers.get(idx,'')}\n"
-        for idx, q in enumerate(req.questions)
-    )
-    feedback = agent.run(
-        f"Evaluate the following answers and score out of {len(req.questions)}:\n{formatted}"
-    )
+def evaluate_route(data: dict):
+    questions = data["quiz"]
+    answers = data["answers"]
+    evaluation = quiz_agent["evaluate_answers"](questions, answers)
+    feedback = quiz_agent["generate_feedback"](evaluation)
+    print("Evaluation:", evaluation)
+    print("Feedback:", feedback)
+    return {"evaluation": evaluation, "feedback": feedback}
+
+
+@router.post("/feedback")
+def feedback_route(data: dict):
+    evaluation = data[evaluation]
+    feedback = quiz_agent["generate_feedback"](evaluation)
     return {"feedback": feedback}
+
 
