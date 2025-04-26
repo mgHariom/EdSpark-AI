@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { postQuiz } from "./api/api";
 
 function App() {
   const [concept, setConcept] = useState("");
@@ -14,49 +13,8 @@ function App() {
   const [loadingQuiz, setLoadingQuiz] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizData, setQuizData] = useState([]);
-  const [result, setResult] = useState(null); 
-
-  const handleGenerateQuiz = async () => {
-    setLoadingQuiz(true);
-    try {
-      const res = await postQuiz({ topic: concept, explanation });
-      console.log("API Response:", res); // Debug the response
-      if (res && Array.isArray(res.quiz)) {
-        setQuizData(res.quiz); // Set quizData directly
-        console.log("Quiz Data:", res.quiz); // Debug the quiz data
-      } else {
-        console.error("Quiz data is not valid:", res.quiz);
-        setQuizData([]); // Fallback to an empty array
-      }
-      setIsModalOpen(true); // Open the modal
-    } catch (e) {
-      alert("Quiz generation failed: " + e.message);
-    } finally {
-      setLoadingQuiz(false);
-    }
-  };
-
-  const handleOptionSelect = (questionIndex, option) => {
-    setSelectedAnswers((prev) => ({
-      ...prev,
-      [questionIndex]: option,
-    }));
-  };
-
-  const handleSubmitQuiz = async () => {
-    setSubmitted(true);
-    console.log("Submitted Answers:", selectedAnswers);
-
-    // Simulate evaluation logic or send to backend
-    const feedback = await evaluateAndGetFeedback(quizData, selectedAnswers);
-    if (feedback) {
-      setResult(feedback); // Set the result state with feedback
-    }
-
-    setIsModalOpen(false); // Close the modal
-  };
-
-  // if (!isOpen) return null;
+  const [result, setResult] = useState(null);
+  const [feedback, setFeedback] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,7 +40,6 @@ function App() {
 
       if (Array.isArray(data.results)) {
         setSearchResults(data.results);
-        // setSearchResults(data.results);
         console.log("Search results:", searchResults);
       }
     } catch (error) {
@@ -92,85 +49,117 @@ function App() {
     }
   };
 
+  const handleGenerateQuiz = async () => {
+    setLoadingQuiz(true);
+
+    try {
+      const res = await fetch("http://localhost:8000/quiz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ explanation }),
+      });
+
+      const data = await res.json();
+      if (data.quiz) {
+        setQuizData(data.quiz);
+        setIsModalOpen(true); // Open the modal when quiz is generated
+      }
+    } catch (error) {
+      console.error("Error generating quiz:", error);
+    } finally {
+      setLoadingQuiz(false);
+    }
+  };
+
+
+
+  const handleAnswerChange = (questionIndex, answer) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [questionIndex]: answer,
+    }));
+  };
+
+  const handleSubmitQuiz = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/evaluate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          quiz: quizData,
+          answers: Object.values(selectedAnswers),
+        }),
+      });
+
+      const data = await res.json();
+      if (data.evaluation) {
+        setResult(data.evaluation);
+      }
+      if (data.feedback) {
+        setFeedback(data.feedback);
+      }
+    } catch (error) {
+      console.error("Error evaluating quiz:", error);
+    }
+  };
+
   useEffect(() => {
     console.log("Updated flashcards:", flashcards);
   }, [flashcards]);
-
-  async function evaluateAndGetFeedback(quiz, answers) {
-    try {
-      const response = await fetch("http://localhost:8000/evaluate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quiz, answers }),
-      });
-
-      if (!response.ok) throw new Error("Evaluation failed");
-
-      const result = await response.json();
-
-      console.log("Evaluation:", result.evaluation);
-      console.log("Feedback:", result.feedback);
-
-      return result;
-    } catch (err) {
-      console.error("❌ Error:", err);
-      return null;
-    }
-  }
-
-  // const quizData = [
-  //   {
-  //     question: "What is a Large Language Model (LLM)?",
-  //     options: [
-  //       "A weather prediction model",
-  //       "A human brain simulation",
-  //       "A program that understands and generates human language",
-  //       "An image classification tool"
-  //     ]
-  //   },
-  //   {
-  //     question: "What makes LLMs 'large'?",
-  //     options: [
-  //       "Their physical size",
-  //       "The amount of data and connections",
-  //       "Their speed",
-  //       "Their energy consumption"
-  //     ]
-  //   },
-  //   {
-  //     question: "What can LLMs NOT do?",
-  //     options: [
-  //       "Translate languages",
-  //       "Answer questions",
-  //       "Generate images",
-  //       "Generate human-like text"
-  //     ]
-  //   },
-  //   {
-  //     question: "How do LLMs learn?",
-  //     options: [
-  //       "By trial and error",
-  //       "By watching videos",
-  //       "By reading huge amounts of language data",
-  //       "By playing games"
-  //     ]
-  //   },
-  //   {
-  //     question: "Which of the following is an example of an LLM?",
-  //     options: [
-  //       "GPT-3",
-  //       "Photoshop",
-  //       "Excel",
-  //       "Google Maps"
-  //     ]
-  //   }
-  // ];
 
   return (
     <div className="container">
       <div className="header">
         <h1 className="title">Ask a Concept</h1>
+   
+      <div className="content-area">
+        {/* Explanation Card */}
+        {explanation && (
+          <div className="explanation-container">
+            <h2 className="explanation-title">Simplified Explanation</h2>
+            <p className="explanation-text">{explanation}</p>
+          </div>
+        )}
+
+        {/* Flashcards Section */}
+        {flashcards && flashcards.length > 0 && (
+          <div className="flashcards-container">
+            <h2 className="flashcard-title">Flashcards</h2>
+            <div className="cards-grid">
+              {flashcards.map((card, index) => (
+                <div key={index} className="flashcard">
+                  <p className="flashcard-content">
+                    <b>
+                      <strong>Q:</strong> {card.question}
+                    </b>
+                  </p>
+                  <p className="flashcard-content">
+                    <strong>A:</strong> {card.answer}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Links Section */}
+        {searchResults && searchResults.length > 0 && (
+          <div className="links-container">
+            <h2 className="links-title">Sources</h2>
+            <ul className="links-list">
+              {searchResults.map((item, index) => (
+                <li key={index} className="link-card">
+                  <a href={item.link} target="_blank" className="link-item">
+                    <h3 className="link-title">{item.title}</h3>
+                    <p className="link-snippet">{item.snippet}</p>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
+   </div>
 
       <div className="content-area">
         {/* Explanation Card */}
@@ -237,7 +226,7 @@ function App() {
         {explanation && (
           <button
             onClick={handleGenerateQuiz}
-            disabled={loadingQuiz || isModalOpen}
+            disabled={loadingQuiz}
             className="generate-button"
           >
             {loadingQuiz ? "Generating..." : "Generate Quiz"}
@@ -266,7 +255,7 @@ function App() {
                           name={`question-${index}`}
                           value={option}
                           checked={selectedAnswers[index] === option}
-                          onChange={() => handleOptionSelect(index, option)}
+                          onChange={() => handleAnswerChange(index, option)}
                         />
                         {option}
                       </label>
@@ -278,30 +267,35 @@ function App() {
               )}
             </div>
           </div>
+        </div>
+      )}
 
-          {result && (
-            <>
-              <h2 className="text-xl font-bold">
-                Your Score: {result.evaluation.score} / 5
-              </h2>
-              {result.feedback.map((item, index) => (
-                <div key={index} className="bg-red-100 p-3 rounded mb-2">
-                  <p>
-                    <strong>Q:</strong> {item.question}
-                  </p>
-                  <p>
-                    <strong>Your Answer:</strong> {item.your_answer}
-                  </p>
-                  <p>
-                    <strong>Correct Answer:</strong> {item.correct_answer}
-                  </p>
-                  <p>
-                    <em>{item.feedback}</em>
-                  </p>
-                </div>
-              ))}
-            </>
-          )}
+      {result && (
+        <div className="result-container">
+          <h2>Results</h2>
+          <p>
+            You scored {result.score} out of {result.total}.
+          </p>
+          <ul>
+            {result.results.map((res, index) => (
+              <li key={index}>
+                <strong>Question:</strong> {res.question}
+                <br />
+                <strong>Your Answer:</strong> {res.your_answer}
+                <br />
+                <strong>Correct Answer:</strong> {res.correct_answer}
+                <br />
+                <strong>Correct:</strong> {res.is_correct ? "Yes" : "No"}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {feedback && (
+        <div className="feedback-container">
+          <h2>Feedback</h2>
+          <p>{feedback}</p>
         </div>
       )}
     </div>

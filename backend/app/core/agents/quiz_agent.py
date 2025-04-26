@@ -7,7 +7,7 @@ def get_quiz_agent() -> Dict[str, Callable]:
     
     def generate_quiz(summary: str) -> dict:
         prompt = f"""You're a quiz master AI. Based on the explanation below, create 5 multiple-choice questions with 4 options each and indicate the correct answer.
-    
+
                 Explanation:
                 {summary}
 
@@ -24,8 +24,20 @@ def get_quiz_agent() -> Dict[str, Callable]:
                 """
 
         response = call_llm("You're a quiz master AI.", prompt)
-        print("LLM response:", response)
-        return response
+        # print("LLM response:", response)
+
+        try:
+            quiz = json.loads(response)  # Ensure the response is valid JSON
+            if isinstance(quiz, list) and all(
+                "question" in q and "options" in q and "answer" in q for q in quiz
+            ):
+                print("Generated quiz:", quiz)
+                return quiz
+            else:
+                raise ValueError("Invalid quiz format")
+        except (json.JSONDecodeError, ValueError) as e:
+            print("Error processing LLM response:", e)
+            return {"error": "Invalid quiz format"}
 
 
     # Step 2: Evaluate answers
