@@ -15,6 +15,7 @@ function App() {
   const [quizData, setQuizData] = useState([]);
   const [result, setResult] = useState(null);
   const [feedback, setFeedback] = useState(null);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false); // State to control result modal visibility
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,8 +72,6 @@ function App() {
     }
   };
 
-
-
   const handleAnswerChange = (questionIndex, answer) => {
     setSelectedAnswers((prev) => ({
       ...prev,
@@ -98,6 +97,9 @@ function App() {
       if (data.feedback) {
         setFeedback(data.feedback);
       }
+
+      setIsModalOpen(false); // Close the quiz modal
+      setIsResultModalOpen(true); // Open the result modal
     } catch (error) {
       console.error("Error evaluating quiz:", error);
     }
@@ -111,102 +113,54 @@ function App() {
     <div className="container">
       <div className="header">
         <h1 className="title">Ask a Concept</h1>
-   
-      <div className="content-area">
-        {/* Explanation Card */}
-        {explanation && (
-          <div className="explanation-container">
-            <h2 className="explanation-title">Simplified Explanation</h2>
-            <p className="explanation-text">{explanation}</p>
-          </div>
-        )}
 
-        {/* Flashcards Section */}
-        {flashcards && flashcards.length > 0 && (
-          <div className="flashcards-container">
-            <h2 className="flashcard-title">Flashcards</h2>
-            <div className="cards-grid">
-              {flashcards.map((card, index) => (
-                <div key={index} className="flashcard">
-                  <p className="flashcard-content">
-                    <b>
-                      <strong>Q:</strong> {card.question}
-                    </b>
-                  </p>
-                  <p className="flashcard-content">
-                    <strong>A:</strong> {card.answer}
-                  </p>
-                </div>
-              ))}
+        <div className="content-area">
+          {/* Explanation Card */}
+          {explanation && (
+            <div className="explanation-container">
+              <h2 className="explanation-title">Simplified Explanation</h2>
+              <p className="explanation-text">{explanation}</p>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Links Section */}
-        {searchResults && searchResults.length > 0 && (
-          <div className="links-container">
-            <h2 className="links-title">Sources</h2>
-            <ul className="links-list">
-              {searchResults.map((item, index) => (
-                <li key={index} className="link-card">
-                  <a href={item.link} target="_blank" className="link-item">
-                    <h3 className="link-title">{item.title}</h3>
-                    <p className="link-snippet">{item.snippet}</p>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-   </div>
-
-      <div className="content-area">
-        {/* Explanation Card */}
-        {explanation && (
-          <div className="explanation-container">
-            <h2 className="explanation-title">Simplified Explanation</h2>
-            <p className="explanation-text">{explanation}</p>
-          </div>
-        )}
-
-        {/* Flashcards Section */}
-        {flashcards && flashcards.length > 0 && (
-          <div className="flashcards-container">
-            <h2 className="flashcard-title">Flashcards</h2>
-            <div className="cards-grid">
-              {flashcards.map((card, index) => (
-                <div key={index} className="flashcard">
-                  <p className="flashcard-content">
-                    <b>
-                      <strong>Q:</strong> {card.question}
-                    </b>
-                  </p>
-                  <p className="flashcard-content">
-                    <strong>A:</strong> {card.answer}
-                  </p>
-                </div>
-              ))}
+          {/* Flashcards Section */}
+          {flashcards && flashcards.length > 0 && (
+            <div className="flashcards-container">
+              <h2 className="flashcard-title">Flashcards</h2>
+              <div className="cards-grid">
+                {flashcards.map((card, index) => (
+                  <div key={index} className="flashcard">
+                    <p className="flashcard-content">
+                      <b>
+                        <strong>Q:</strong> {card.question}
+                      </b>
+                    </p>
+                    <p className="flashcard-content">
+                      <strong>A:</strong> {card.answer}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Links Section */}
-        {searchResults && searchResults.length > 0 && (
-          <div className="links-container">
-            <h2 className="links-title">Sources</h2>
-            <ul className="links-list">
-              {searchResults.map((item, index) => (
-                <li key={index} className="link-card">
-                  <a href={item.link} target="_blank" className="link-item">
-                    <h3 className="link-title">{item.title}</h3>
-                    <p className="link-snippet">{item.snippet}</p>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+          {/* Links Section */}
+          {searchResults && searchResults.length > 0 && (
+            <div className="links-container">
+              <h2 className="links-title">Sources</h2>
+              <ul className="links-list">
+                {searchResults.map((item, index) => (
+                  <li key={index} className="link-card">
+                    <a href={item.link} target="_blank" className="link-item">
+                      <h3 className="link-title">{item.title}</h3>
+                      <p className="link-snippet">{item.snippet}</p>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="input-form">
@@ -266,36 +220,57 @@ function App() {
                 <p>No quiz data available.</p>
               )}
             </div>
+            <div className="submit-container">
+              <button
+                className="submit-btn"
+                onClick={handleSubmitQuiz}
+                disabled={submitted}
+              >
+                {submitted ? "Submitted" : "Submit"}
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {result && (
-        <div className="result-container">
-          <h2>Results</h2>
-          <p>
-            You scored {result.score} out of {result.total}.
-          </p>
-          <ul>
-            {result.results.map((res, index) => (
-              <li key={index}>
-                <strong>Question:</strong> {res.question}
-                <br />
-                <strong>Your Answer:</strong> {res.your_answer}
-                <br />
-                <strong>Correct Answer:</strong> {res.correct_answer}
-                <br />
-                <strong>Correct:</strong> {res.is_correct ? "Yes" : "No"}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {feedback && (
-        <div className="feedback-container">
-          <h2>Feedback</h2>
-          <p>{feedback}</p>
+      {/* Result Modal */}
+      {isResultModalOpen && (
+        <div className="modal-backdrop">
+          <div className="result-modal">
+            <button
+              className="close-btn"
+              onClick={() => setIsResultModalOpen(false)} // Close the result modal
+            >
+              ✖
+            </button>
+            <h2 className="result-title">Quiz Results</h2>
+            {result && (
+              <div className="result-content">
+                <p>
+                  You scored {result.score} out of {result.total}.
+                </p>
+                <ul>
+                  {result.results.map((res, index) => (
+                    <li key={index}>
+                      <strong>Question:</strong> {res.question}
+                      <br />
+                      <strong>Your Answer:</strong> {res.your_answer}
+                      <br />
+                      <strong>Correct Answer:</strong> {res.correct_answer}
+                      <br />
+                      <strong>Correct:</strong> {res.is_correct ? "Yes" : "No"}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {feedback && (
+              <div className="feedback-content">
+                <h3>Feedback</h3>
+                <p>{feedback}</p>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
