@@ -17,6 +17,15 @@ body {
   min-height: 100vh;
 }
 
+.dashboard-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Full height */
+  background-color: #2a2a2a; /* Dark background */
+}
+
 .container {
   display: flex;
   flex-direction: column;

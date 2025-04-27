@@ -1,0 +1,80 @@
+/* General styles for the page */
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #2a2a2a; /* Light gray background */
+  }
+  
+  /* Form container */
+  .auth-form {
+    background-color: #1f1f1f; /* White background */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 320px;
+  }
+  
+  /* Form title */
+  .auth-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #ffc107; /* Dark gray text */
+  }
+  
+  /* Input fields */
+  .auth-input {
+    border: 1px solid #606061; /* Light gray border */
+    padding: 0.75rem;
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #fff; /* Dark gray text */
+  }
+  
+  .auth-input:focus {
+    outline: none;
+    border-color: #ffc107; 
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Blue shadow on focus */
+  }
+  
+  /* Submit button */
+  .auth-button {
+    background-color: #ffc107; 
+    color: #ffffff; /* White text */
+    padding: 0.75rem;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .auth-button:hover {
+    background-color: #e2a900; /* Darker blue on hover */
+  }
+  
+  .auth-button:active {
+    background-color: #ffc107; /* Even darker blue on click */
+  }
+  
+  /* Toggle login/signup link */
+  .auth-toggle {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #ffc107; /* Blue text */
+    text-align: center;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .auth-toggle:hover {
+    color: #e2a900; /* Darker blue on hover */
+  }
