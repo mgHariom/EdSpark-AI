@@ -140,8 +140,8 @@ function Dashboard() {
                 required
                 disabled={isGenerating}
               />
-              <div className="buttons-container">
-              <button className="generate-button" disabled={isGenerating}>
+              <div>
+                <button className="generate-button" disabled={isGenerating}>
                 {isGenerating ? "Generating..." : "Generate"}
               </button>
 

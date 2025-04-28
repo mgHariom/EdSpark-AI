@@ -290,12 +290,6 @@ body {
   .sidebar-card {
     min-height: 150px;
   }
-
-  .buttons-container {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -338,6 +332,8 @@ body {
   border: 1px solid #e5e7eb;
   display: inline-block; /* Ensures it wraps content */
   max-width: fit-content; /* Avoids overflow */
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .quiz-modal {
@@ -384,7 +380,8 @@ body {
 }
 
 .quiz-content {
-  max-height: 60vh;
+  display: 1;
+  max-height: 100vh;
   overflow-y: auto;
   padding-right: 10px;
   scrollbar-width: none; /* For Firefox */
