@@ -347,20 +347,21 @@ function Dashboard() {
                             {option}
                           </label>
                         ))}
+                        <div className="submit-container">
+                          <button
+                            className="submit-btn"
+                            onClick={handleSubmitQuiz}
+                            disabled={submitted}
+                          >
+                            {submitted ? "Submitted" : "Submit"}
+                          </button>
+                        </div>
                       </div>
+                      
                     ))
                   ) : (
                     <p>No quiz data available.</p>
                   )}
-                </div>
-                <div className="submit-container">
-                  <button
-                    className="submit-btn"
-                    onClick={handleSubmitQuiz}
-                    disabled={submitted}
-                  >
-                    {submitted ? "Submitted" : "Submit"}
-                  </button>
                 </div>
               </div>
             ) : (
