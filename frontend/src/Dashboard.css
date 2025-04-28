@@ -290,6 +290,12 @@ body {
   .sidebar-card {
     min-height: 150px;
   }
+
+  .buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
 }
 
 @media (max-width: 480px) {

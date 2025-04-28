@@ -140,6 +140,7 @@ function Dashboard() {
                 required
                 disabled={isGenerating}
               />
+              <div className="buttons-container">
               <button className="generate-button" disabled={isGenerating}>
                 {isGenerating ? "Generating..." : "Generate"}
               </button>
@@ -153,6 +154,7 @@ function Dashboard() {
                   {loadingQuiz ? "Generating..." : "Generate Quiz"}
                 </button>
               )}
+              </div>
             </form>
 
             {isModalOpen && (
