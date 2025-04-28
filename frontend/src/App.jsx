@@ -12,7 +12,7 @@ function App() {
         {/* If user is logged in, go to dashboard; else login */}
         <Route
           path="/"
-          element={currentUser ? <Navigate to="/dashboard" /> : <AuthPage />}
+          element={currentUser ? <Navigate to="/" /> : <AuthPage />}
         />
         <Route
           path="/dashboard"
