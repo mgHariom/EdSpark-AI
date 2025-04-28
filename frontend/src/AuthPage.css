@@ -34,7 +34,7 @@
     border-radius: 4px;
     margin-bottom: 1rem;
     font-size: 1rem;
-    color: #fff; /* Dark gray text */
+    color: #505050; /* Dark gray text */
   }
   
   .auth-input:focus {
@@ -45,7 +45,7 @@
   
   /* Submit button */
   .auth-button {
-    background-color: #ffca2a; 
+    background-color: #ffca20; 
     color: #ffffff; /* White text */
     padding: 0.75rem;
     width: 100%;

@@ -130,31 +130,6 @@ function Dashboard() {
           <div className="header">
             <h1 className="title">Ask a Concept</h1>
 
-            <form onSubmit={handleSubmit} className="input-form">
-              <input
-                type="text"
-                value={concept}
-                onChange={(e) => setConcept(e.target.value)}
-                className="input-field"
-                placeholder="Type a concept"
-                required
-                disabled={isGenerating}
-              />
-              <button className="generate-button" disabled={isGenerating}>
-                {isGenerating ? "Generating..." : "Generate"}
-              </button>
-
-              {explanation && (
-                <button
-                  onClick={handleGenerateQuiz}
-                  disabled={loadingQuiz}
-                  className="generate-button"
-                >
-                  {loadingQuiz ? "Generating..." : "Generate Quiz"}
-                </button>
-              )}
-            </form>
-
             {isModalOpen && (
               <div className="modal-backdrop">
                 <div className="quiz-modal">
@@ -421,6 +396,30 @@ function Dashboard() {
               </div>
             )}
           </div>
+          <form onSubmit={handleSubmit} className="input-form">
+              <input
+                type="text"
+                value={concept}
+                onChange={(e) => setConcept(e.target.value)}
+                className="input-field"
+                placeholder="Type a concept"
+                required
+                disabled={isGenerating}
+              />
+              <button className="generate-button" disabled={isGenerating}>
+                {isGenerating ? "Generating..." : "Generate"}
+              </button>
+
+              {explanation && (
+                <button
+                  onClick={handleGenerateQuiz}
+                  disabled={loadingQuiz}
+                  className="generate-button"
+                >
+                  {loadingQuiz ? "Generating..." : "Generate Quiz"}
+                </button>
+              )}
+            </form>
         </div>
       </div>
     </AuthProvider>
