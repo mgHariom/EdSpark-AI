@@ -30,7 +30,7 @@ function Dashboard() {
     setIsGenerating(true);
 
     try {
-      const res = await fetch("http://localhost:8000/query", {
+      const res = await fetch("https://edspark-ai.onrender.com/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: concept }),
@@ -67,7 +67,7 @@ function Dashboard() {
     setLoadingQuiz(true);
 
     try {
-      const res = await fetch("http://localhost:8000/quiz", {
+      const res = await fetch("https://edspark-ai.onrender.com/quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ explanation }),
@@ -94,7 +94,7 @@ function Dashboard() {
 
   const handleSubmitQuiz = async () => {
     try {
-      const res = await fetch("http://localhost:8000/evaluate", {
+      const res = await fetch("https://edspark-ai.onrender.com/evaluate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -6,7 +6,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Allows all origins
+    allow_origins=["http://localhost:5173", "https://ed-spark-ai.vercel.app/"],  # Allows all origins
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods (GET, POST, PUT, DELETE, OPTIONS)
     allow_headers=["*"],  # Allows all headers
