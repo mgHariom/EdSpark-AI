@@ -410,7 +410,7 @@ function Dashboard() {
                             className="link-item"
                           >
                             <h3 className="link-title">{item.title}</h3>
-                            <p className="link-snippet">{item.snippet}</p>
+                            <p className="link-snippet">{item.link}</p>
                           </a>
                         </li>
                       ))}

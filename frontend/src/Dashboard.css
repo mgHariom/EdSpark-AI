@@ -17,25 +17,27 @@ body {
   min-height: 100vh;
 }
 
+/* Ensure the dashboard container is scrollable */
 .dashboard-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: row; /* Change to column for better stacking */
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Align content to the top */
   min-height: 100vh; /* Full height */
   background-color: #2a2a2a; /* Dark background */
-  overflow-y: auto;
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-bottom: 20px; /* Add padding to prevent overlap with input field */
 }
 
+/* Ensure the container holding the content is scrollable */
 .container {
   display: flex;
   flex-direction: column;
-  height: auto; /* Changed from 100vh to auto */
-  max-width: 900px;
-  margin: 0 auto;
-  position: relative;
-  padding-bottom: 6rem; /* Space for form */
-  overflow: auto;
+  width: 100%;
+  max-width: 800px; /* Limit the width for better readability */
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Enable scrolling for overflowing content */
 }
 
 /* Updated content area to wrap content neatly */
@@ -151,72 +153,20 @@ body {
 
 /* input field styling */
 
+/* Input form styling */
 .input-form {
-  display: flex;
-  gap: 0.5rem;
-  padding: 1rem;
-  background-color: #2a2a2a;
-  position: fixed;
+  position: sticky; /* Keep the input form at the bottom of the viewport */
   bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
+  background-color: #2a2a2a; /* Match the background color */
+  padding: 10px;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Add a shadow for separation */
+  z-index: 10; /* Ensure it stays above other content */
 }
 
-.input-field {
-  flex: 1;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  background-color: #3a3a3a;
-  color: #e0e0e0;
-  font-size: 1rem;
-}
-
-.input-field::placeholder {
-  color: #999;
-}
-
-.input-field:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.5);
-}
-
-.generate-button {
-  padding: 0.75rem 1.5rem;
-  background-color: #ffc107; /* Golden yellow color */
-  color: #333;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.generate-button:hover {
-  background-color: #ffca2c;
-}
-
-.generate-button:disabled {
-  background-color: #b38600;
-  cursor: not-allowed;
-}
-
-/* Add these styles for when content overflows */
-.content-area::-webkit-scrollbar {
-  width: 8px;
-}
-
-.content-area::-webkit-scrollbar-track {
-  background: #2a2a2a;
-}
-
-.content-area::-webkit-scrollbar-thumb {
-  background-color: #555;
-  border-radius: 4px;
+/* Add spacing to the content area */
+.content-area {
+  margin-bottom: 80px; /* Add space to prevent overlap with the input form */
 }
 
 /* loading */
