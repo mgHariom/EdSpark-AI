@@ -1,5 +1,5 @@
 from typing import Callable, Dict
-from core.llm import call_llm  # your existing Groq wrapper
+from app.core.llm import call_llm  # your existing Groq wrapper
 import json
 
 def get_quiz_agent() -> Dict[str, Callable]:

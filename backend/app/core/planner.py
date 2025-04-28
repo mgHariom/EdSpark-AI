@@ -1,5 +1,5 @@
 # app/core/planner.py
-from core.llm import call_llm 
+from app.core.llm import call_llm 
 
 def generate_search_prompts(topic: str) -> list[str]:
     system_prompt = (

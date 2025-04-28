@@ -1,4 +1,4 @@
-from core.llm import call_llm
+from app.core.llm import call_llm
 
 def generate_flashcards_from_explanation(explanation: str):
     system_prompt = (

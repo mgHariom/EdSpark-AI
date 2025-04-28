@@ -1,12 +1,12 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 import ast
-from core.planner import generate_search_prompts
-from core.llm import call_llm
-from core.search import search_web  # Brave API-based search
-from core.flashcards import generate_flashcards_from_explanation
+from app.core.planner import generate_search_prompts
+from app.core.llm import call_llm
+from app.core.search import search_web  # Brave API-based search
+from app.core.flashcards import generate_flashcards_from_explanation
 # from core.agents.quiz_agent import generate_quiz_direct
-from core.agents.quiz_agent import get_quiz_agent
+from app.core.agents.quiz_agent import get_quiz_agent
 
 router = APIRouter()
 
