@@ -386,7 +386,9 @@ function Dashboard() {
                             className="link-item"
                           >
                             <h3 className="link-title">{item.title}</h3>
-                            <p className="link-snippet">{item.link}</p>
+                            <p className="link-snippet">
+                              {item.link.length > 25 ? `${item.link.substring(0, 25)}...` : item.link}
+                            </p>
                           </a>
                         </li>
                       ))}
