@@ -191,7 +191,8 @@ function Dashboard() {
                     ) : (
                       <p>No quiz data available.</p>
                     )}
-                    <div className="submit-container">
+                  </div>
+                  <div className="submit-container">
                     <button
                       className="submit-btn"
                       onClick={handleSubmitQuiz}
@@ -199,7 +200,6 @@ function Dashboard() {
                     >
                       {submitted ? "Submitted" : "Submit"}
                     </button>
-                  </div>
                   </div>
                 </div>
               </div>
@@ -352,7 +352,8 @@ function Dashboard() {
                   ) : (
                     <p>No quiz data available.</p>
                   )}
-                  <div className="submit-container">
+                </div>
+                <div className="submit-container">
                   <button
                     className="submit-btn"
                     onClick={handleSubmitQuiz}
@@ -360,7 +361,6 @@ function Dashboard() {
                   >
                     {submitted ? "Submitted" : "Submit"}
                   </button>
-                </div>
                 </div>
               </div>
             ) : (
